@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Stock>
+
+@{
+    ViewData["Title"] = "Explore";
+    ViewData["ActivePage"] = "Stocks/Explore";
+}
+
+<div class="flex ml mt">
+    <div class="flex-1">
+        <p class="text-grey">Stocks <i class="fa-solid fa-caret-right"></i> @ViewBag.Title</p>
+    </div>
+</div>
+<div class="flex">
+    <div class="flex-1 flex-direction-vertical box" style="padding: 20px;">
+        <div class="flex" style="justify-content: space-between; align-items: center;">
+            <h3 class="text-grey">Stocks</h3>
+            <a asp-action="Explore" asp-controller="Stocks" asp-route-showAllStocks="true">Show all stocks</a>
+        </div>
+
+        <div class="flex-1 mt mb">
+            @foreach (var stock in Model)
+            {
+                <a asp-action="Explore" asp-controller="Stocks" asp-route-stockSymbol="@stock.StockSymbol" style="text-decoration: none; color: black;">
+                    <div class="box">
+                        <h1>@stock.StockName</h1>
+                        <h5 class="text-grey">@($"({@stock.StockSymbol})")</h5>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+    <div class="flex-1 flex-direction-vertical">
+        @if (ViewBag.SelectedStockSymbol != null)
+        {
+            @(await Component.InvokeAsync("SelectedStock", new { stockSymbol = ViewBag.SelectedStockSymbol }))
+        }
+    </div>
+</div>

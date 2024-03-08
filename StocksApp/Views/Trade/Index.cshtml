@@ -1,0 +1,61 @@
+﻿@model StockTrade
+
+@{
+    ViewData["Title"] = "Microsoft Corp";
+    ViewData["ActivePage"] = "Trade/Index";
+    var errors = ViewBag.Errors;
+}
+
+<input type="hidden" id="apiKey" value="@ViewBag.ApiKey" />
+
+<div class="flex ml mt">
+    <p class="text-grey">Stocks <i class="fa-solid fa-caret-right"></i> @ViewBag.Title</p>
+</div>
+<div class="box trading-panel">
+    <div class="flex trading-panel-flex">
+        <div id="stock-price-panel" style="display: flex; align-items: center;">
+            <div class="flex flex-direction-vertical">
+                <h3 class="text-blue">@Model.StockName (@Model.StockSymbol)</h3>
+                <h1><small class="text-grey">$</small> <span class="price">@Model.Price.ToString("N")</span></h1>
+            </div>
+        </div>
+        <div class="flex border-left"></div>
+        <div class="flex flex-direction-vertical margin-auto" style="align-items: center; justify-content: center; padding: 25px 0">
+            <div class="flex-1">
+                <h3 class="text-grey">New Order</h3>
+            </div>
+            <form id="orderForm" method="post">
+                <div class="flex-1 mt mb">
+                    <div>
+                        <label asp-for="Quantity">Quantity:</label>
+                    </div>
+                    <input type="number" asp-for="Quantity" class="form-input" style="width: 100px"/><br />
+                    <span asp-validation-for="Quantity"></span>
+                </div>
+                <div class="flex-1 mt" style="margin-top: 15px">
+                    <input type="hidden" id="stockSymbol" asp-for="StockSymbol" />
+                    <input type="hidden" asp-for="StockName" />
+                    <input type="hidden" asp-for="Price" />
+                    <button type="submit" class="button button-red-back" asp-action="SellOrder" asp-controller="Trade" style="margin-right: 8px;"><i class="fa-solid fa-arrow-down"></i> Sell</button>
+                    <button type="submit" class="button button-green-back" asp-action="BuyOrder" asp-controller="Trade"><i class="fa-solid fa-arrow-up"></i> Buy</button>
+
+                    <!-- Display error messages -->
+                    @if (ViewBag.Errors != null && ViewBag.Errors.Count > 0)
+                    {
+                        <ul class="error-list">
+                            @foreach (var error in ViewBag.Errors)
+                            {
+                                <li>@error</li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/StocksApp.js"></script>
+}
+

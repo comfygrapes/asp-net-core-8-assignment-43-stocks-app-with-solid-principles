@@ -1,0 +1,55 @@
+﻿@model Orders
+
+@{
+    ViewData["Title"] = "Orders";
+    ViewData["ActivePage"] = "Trade/Orders";
+}
+
+<div class="flex ml mt">
+    <div class="flex-1">
+        <p class="text-grey">Stocks <i class="fa-solid fa-caret-right"></i> @ViewBag.Title</p>
+    </div>
+    <div class="flex-1 text-right mr">
+        <a asp-action="OrdersPDF" asp-controller="Trade">Download as PDF</a>
+    </div>
+</div>
+<div class="flex">
+    <div class="flex-1 flex-direction-vertical box" style="padding: 20px;">
+        <div class="flex">
+            <h3 class="text-grey">Buy Orders</h3>
+        </div>
+
+        <div class="flex-1 mt mb">
+            @foreach (var buyOrder in Model.BuyOrders)
+            {
+                <div class="flex flex-direction-vertical mt" style="padding: 0 5px;">
+                    <h2 class="mt">@buyOrder.StockName (@buyOrder.StockSymbol)</h2>
+                    <h4 class="mb">@buyOrder.Quantity <span class="text-grey">shares at</span> $@buyOrder.Price.ToString("N")</h4>
+                    <h4 class="mb"><span class="text-grey">Trade Amount: </span>$@((buyOrder.Price * buyOrder.Quantity).ToString("N"))</h4>
+                    <p class="text-grey mb" style="font-size: 24px">@buyOrder.DateAndTimeOfOrder.ToString("dd MMMM yyyy hh:mm:ss tt").Replace("am", "AM").Replace("pm", "PM")</p>
+                </div>
+                <div class="border-bottom">
+                </div>
+            }
+        </div>
+    </div>
+    <div class="flex-1 flex-direction-vertical box" style="padding: 20px;">
+        <div class="flex">
+            <h3 class="text-grey">Sell Orders</h3>
+        </div>
+
+        <div class="flex-1 mt mb">
+            @foreach (var sellOrder in Model.SellOrders)
+            {
+                <div class="flex flex-direction-vertical mt" style="padding: 0 5px;">
+                    <h2 class="mt">@sellOrder.StockName (@sellOrder.StockSymbol)</h2>
+                    <h4>@sellOrder.Quantity <span class="text-grey">shares at</span> $@sellOrder.Price.ToString("N")</h4>
+                    <h4 class="mb"><span class="text-grey">Trade Amount: </span>$@((sellOrder.Price * sellOrder.Quantity).ToString("N"))</h4>
+                    <p class="text-grey mb" style="font-size: 24px">@sellOrder.DateAndTimeOfOrder.ToString("dd MMMM yyyy hh:mm:ss tt").Replace("am", "AM").Replace("pm", "PM")</p>
+                </div>
+                <div class="border-bottom">
+                </div>
+            }
+        </div>
+    </div>
+</div>
