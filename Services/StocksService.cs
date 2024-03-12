@@ -26,7 +26,7 @@ namespace Services
             var buyOrder = buyOrderRequest.ToBuyOrder();
             buyOrder.BuyOrderId = Guid.NewGuid();
 
-            var buyOrderFromRepository = await _stocksRepository.CreateBuyOrder(buyOrder);
+            await _stocksRepository.CreateBuyOrder(buyOrder);
 
             _logger.LogInformation("Buy order created.");
 
@@ -41,7 +41,7 @@ namespace Services
             var sellOrder = sellOrderRequest.ToSellOrder();
             sellOrder.SellOrderId = Guid.NewGuid();
 
-            var sellOrderFromRepository = await _stocksRepository.CreateSellOrder(sellOrder);
+            await _stocksRepository.CreateSellOrder(sellOrder);
 
             _logger.LogInformation("Sell order created.");
 

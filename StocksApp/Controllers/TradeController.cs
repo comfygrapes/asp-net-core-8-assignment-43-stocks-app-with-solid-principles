@@ -12,15 +12,17 @@ namespace StocksApp.Controllers
     [Route("[Controller]")]
     public class TradeController : Controller
     {
-        private readonly IFinnhubService _finnhubService;
+        private readonly IFinnhubCompanyProfileService _finnhubCompanyProfileService;
+        private readonly IFinnhubStockPriceQuoteService _finnhubStockPriceQuoteService;
         private readonly IConfiguration _configuration;
         private readonly IStocksService _stocksService;
         private readonly TradingOptions _tradingOptions;
         private readonly ILogger<TradeController> _logger;
 
-        public TradeController(IFinnhubService myService, IConfiguration configuration, IStocksService stocksService, IOptions<TradingOptions> tradingOptions, ILogger<TradeController> logger)
+        public TradeController(IFinnhubCompanyProfileService finnhubCompanyProfileService, IFinnhubStockPriceQuoteService finnhubStockPriceQuoteService, IConfiguration configuration, IStocksService stocksService, IOptions<TradingOptions> tradingOptions, ILogger<TradeController> logger)
         {
-            _finnhubService = myService;
+            _finnhubCompanyProfileService = finnhubCompanyProfileService;
+            _finnhubStockPriceQuoteService = finnhubStockPriceQuoteService;
             _configuration = configuration;
             _stocksService = stocksService;
             _tradingOptions = tradingOptions.Value;
@@ -39,8 +41,8 @@ namespace StocksApp.Controllers
                 stockSymbol = "MSFT";
             }
 
-            var company = await _finnhubService.GetCompanyProfile(stockSymbol);
-            var stock = await _finnhubService.GetStockPriceQuote(stockSymbol);
+            var company = await _finnhubCompanyProfileService.GetCompanyProfile(stockSymbol);
+            var stock = await _finnhubStockPriceQuoteService.GetStockPriceQuote(stockSymbol);
 
             var stockTrade = new StockTrade() { StockSymbol = stockSymbol };
             

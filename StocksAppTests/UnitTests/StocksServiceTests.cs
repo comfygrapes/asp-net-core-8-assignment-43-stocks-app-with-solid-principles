@@ -8,6 +8,8 @@ using Moq.EntityFrameworkCore;
 using RepositoryContracts;
 using FluentAssertions;
 using AutoFixture;
+using Castle.Core.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace StocksAppTests.UnitTests
 {
@@ -24,10 +26,12 @@ namespace StocksAppTests.UnitTests
         {
             _fixture = new Fixture();
 
+            var _loggerMock = new Mock<ILogger<StocksService>>();
+
             _stocksRepositoryMock = new Mock<IStocksRepository>();
             _stocksRepository = _stocksRepositoryMock.Object;
-
-            _stocksService = new StocksService(_stocksRepository, null);
+            
+            _stocksService = new StocksService(_stocksRepository, _loggerMock.Object);
         }
 
         #region CreateBuyOrder
